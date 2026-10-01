@@ -18,15 +18,13 @@ export const validate = (schema) => (req, res, next) => {
 };
 
 export const errorHandler = (err, req, res, next) => {
-  logger.error(`${req.method} ${req.url} → ${err.message}`);
+  logger.error(`${req.method} ${req.url} → ${err.stack || err.message}`);
 
   const statusCode = err.statusCode || 500;
-  const message = err.isOperational ? err.message : 'Internal Server Error';
+  const message = err.statusCode && err.statusCode < 500 ? err.message : 'Internal Server Error';
 
   return res.status(statusCode).json({
     success: false,
     message,
-    errors: err.errors || [],
-    ...(process.env.NODE_ENV === 'development' && { stack: err.stack }),
   });
 };

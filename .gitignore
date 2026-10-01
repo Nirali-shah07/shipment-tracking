@@ -3,3 +3,4 @@ uploads/
 dist/
 build/
 .env
+postman_collection.json

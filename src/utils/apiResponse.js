@@ -1,10 +1,16 @@
 
 const apiResponse = (res, statusCode, message, data = null) => {
-  return res.status(statusCode).json({
-    success: true,
+  const payload = {
+    success: statusCode >= 200 && statusCode < 300,
     message,
-    data,
-  });
+  };
+
+  if (data !== null && data !== undefined) {
+    payload.data = data;
+  }
+
+  return res.status(statusCode).json(payload);
 };
 
 export default apiResponse;
+
